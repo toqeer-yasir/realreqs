@@ -32,11 +32,15 @@ def filter_third_party_imports(
     project_dir: str,
 ) -> set[str]:
     """
-    Remove standard-library and local modules, leaving only third-party packages.
+    Remove standard-library and local modules, leaving only third-party import paths.
     """
     stdlib_names = get_stdlib_module_names()
     local_names = get_local_module_names(project_dir)
 
-    third_party = all_imports - stdlib_names - local_names
+    third_party = set()
+    for full_path in all_imports:
+        top_level = full_path.split(".")[0]
+        if top_level not in stdlib_names and top_level not in local_names:
+            third_party.add(full_path)
 
     return third_party

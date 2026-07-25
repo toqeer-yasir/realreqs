@@ -2,7 +2,6 @@ import ast
 import os
 
 
-#folders that should not be scanned because they don't contain project source code.
 SKIP_DIRS = {".venv", "venv", "__pycache__", ".git", "node_modules"}
 
 
@@ -32,7 +31,7 @@ def find_python_files(project_dir: str) -> list[str]:
 
 def extract_imports_from_file(file_path: str) -> set[str]:
     """
-    Parse a Python file and return the unique top-level modules it imports.
+    Parse a Python file and return the unique full dotted import paths it uses.
     """
     with open(file_path, "r", encoding="utf-8") as f:
         source_code = f.read()
@@ -44,11 +43,11 @@ def extract_imports_from_file(file_path: str) -> set[str]:
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                imports.add(alias.name.split(".")[0])
+                imports.add(alias.name)
 
         elif isinstance(node, ast.ImportFrom):
             if node.module is not None:
-                imports.add(node.module.split(".")[0])
+                imports.add(node.module)
 
     return imports
 
