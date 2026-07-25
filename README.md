@@ -27,7 +27,16 @@ Optional arguments:
 ```bash
 realreqs /path/to/project        # scan a different directory
 realreqs -o deps.txt             # custom output filename
+realreqs -y                      # skip confirmation prompts (for scripts/CI)
 ```
+
+### Confirmation prompts
+
+`realreqs` will ask before:
+- Writing an empty `requirements.txt` (no third-party dependencies detected)
+- Overwriting an existing `requirements.txt` at the target location
+
+Pass `-y` / `--yes` to skip these prompts automatically — recommended when running `realreqs` as part of an automated script or CI pipeline.
 
 ## How it works
 
