@@ -11,10 +11,10 @@ def build_requirements_content(resolved: dict[str, str]) -> str:
     Format resolved packages into requirements.txt content.
     """
     lines = [f"{name}=={version}" for name, version in sorted(resolved.items())]
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
-def run(project_dir: str, output_file: str, assume_yes: bool = False) -> None:
+def run(project_dir: str, output_file: str, assume_yes: bool = False, verbose: bool = False) -> None:
     """
     Scan the project and safely generate a requirements.txt file.
     """
@@ -31,7 +31,6 @@ def run(project_dir: str, output_file: str, assume_yes: bool = False) -> None:
         return
 
     third_party = filter_third_party_imports(all_imports, project_dir)
-    print(f"Found {len(third_party)} third-party import(s).")
 
     if not third_party:
         print(
@@ -58,6 +57,9 @@ def run(project_dir: str, output_file: str, assume_yes: bool = False) -> None:
 
     resolved, unresolved = resolve_all(third_party)
     content = build_requirements_content(resolved)
+
+    if verbose:
+        print(f"\n({len(third_party)} import path(s) scanned, resolved to {len(resolved)} package(s))")
 
     try:
         with open(output_path, "w", encoding="utf-8") as f:
@@ -105,8 +107,15 @@ def main():
         help="Skip confirmation prompts (for scripts and automated workflows).",
     )
 
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show additional detail about import scanning and resolution.",
+    )
+
     args = parser.parse_args()
-    run(args.project_dir, args.output, assume_yes=args.yes)
+    run(args.project_dir, args.output, assume_yes=args.yes, verbose=args.verbose)
 
 
 if __name__ == "__main__":
