@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "realreqs"
-version = "0.1.1"
+version = "0.1.2"
 description = "Generate accurate requirements.txt files from real installed package metadata, not guesses or PyPI lookups."
 readme = "README.md"
 requires-python = ">=3.10"
