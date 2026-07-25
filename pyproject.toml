@@ -1,17 +1,24 @@
+# pyproject.toml
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "realreqs"
-version = "0.1.0"
+version = "0.1.1"
 description = "Generate accurate requirements.txt files from real installed package metadata, not guesses or PyPI lookups."
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    { name = "Toqeer Yasir" }
+    { name = "Toqeer Yasir", email = "toqeeryasir01@gmail.com" }
 ]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/toqeer-yasir/realreqs"
+Repository = "https://github.com/toqeer-yasir/realreqs"
+Issues = "https://github.com/toqeer-yasir/realreqs/issues"
 
 [project.scripts]
 realreqs = "realreqs.cli:main"
